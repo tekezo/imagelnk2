@@ -78,6 +78,17 @@
       "extraURLs": []
     }
   },
+  {
+    "filename": "pixiv.manga.html",
+    "url": "https://www.pixiv.net/en/artworks/51691357",
+    "result": {
+      "title": "#漫画 Manga Example - imagelnkのマンガ - pixiv",
+      "imageUrls": [
+        "https://i.pximg.net/img-original/img/2015/07/30/22/18/43/51691357_p0.jpg"
+      ],
+      "extraURLs": []
+    }
+  },
 
   //
   // twitter
