@@ -1,0 +1,214 @@
+[
+  //
+  // generic
+  //
+
+  {
+    "filename": "generic.pqrs.html",
+    "url": "https://pqrs.org",
+    "result": {
+      "title": "pqrs.org",
+      "imageUrls": [],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "generic.github.html",
+    "url": "https://github.com/twitterdev",
+    "result": {
+      "title": "@TwitterDev",
+      "imageUrls": [
+        "https://avatars.githubusercontent.com/u/7451118?s=280&v=4"
+      ],
+      "extraURLs": []
+    }
+  },
+
+  //
+  // amazon.co.jp
+  //
+
+  {
+    "filename": "amazoncojp.html",
+    "url": "https://www.amazon.co.jp/dp/B08X11GD52/",
+    "result": {
+      "title": "Amazon.co.jp: Anker Nano II 65W (PD 充電器 USB-C)【独自技術Anker GaN II採用/PD対応/PSE技術基準適合/折りたたみ式プラグ】MacBook PD対応Windows PC iPad iPhone Galaxy Android スマートフォン ノートPC 各種 その他機器対応 (ブラック) : 家電＆カメラ",
+      "imageUrls": [
+        //
+        // There are several patterns of image URLs returned by amazon.
+        //
+
+        //"https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg"
+        "https://m.media-amazon.com/images/I/616HWFy9cVS.__AC_SX300_SY300_QL70_ML2_.jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+
+  //
+  // amazon.com
+  //
+
+  {
+    "filename": "amazoncom.html",
+    "url": "https://www.amazon.com/dp/B0BLRQ4116/",
+    "result": {
+      "title": "Amazon.com: Kensington SlimBlade™ Pro Wireless Trackball, Rechargeable Battery, Bluetooth 2.4GHz Connection Options (K72080WW) : Electronics",
+      "imageUrls": [
+        //
+        // There are several patterns of image URLs returned by amazon.
+        //
+
+        "https://m.media-amazon.com/images/I/61A9ebYDldL._AC_SX425_.jpg"
+        //"https://m.media-amazon.com/images/I/61A9ebYDldL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+
+  //
+  // pixiv
+  //
+
+  {
+    "filename": "pixiv.single.html",
+    "url": "https://www.pixiv.net/artworks/51691307",
+    "result": {
+      "title": "#Example Image Example - imagelnkのイラスト - pixiv",
+      "imageUrls": [
+        "https://i.pximg.net/img-original/img/2015/07/30/22/16/27/51691307_p0.jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+
+  //
+  // twitter
+  //
+
+  {
+    "filename": "twitter.images.html",
+    "url": "https://twitter.com/ImageLnk/status/1296296267526500353",
+    "result": {
+      "title": "ImageLnk: Images",
+      "imageUrls": [
+        "https://pbs.twimg.com/media/Ef1efyBU0AEgknd?format=jpg",
+        "https://pbs.twimg.com/media/Ef1ehO8VoAEitBi?format=jpg",
+        "https://pbs.twimg.com/media/Ef1ej1WUYAAzKwn?format=jpg",
+        "https://pbs.twimg.com/media/Ef1ek9QU4AIi0Nr?format=jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.quote.html",
+    "url": "https://twitter.com/ImageLnk/status/1669001451673358336",
+    "result": {
+      "title": "ImageLnk: Quote Tweet",
+      "imageUrls": [
+        "https://pbs.twimg.com/media/Ef1efyBU0AEgknd?format=jpg",
+        "https://pbs.twimg.com/media/Ef1ehO8VoAEitBi?format=jpg",
+        "https://pbs.twimg.com/media/Ef1ej1WUYAAzKwn?format=jpg",
+        "https://pbs.twimg.com/media/Ef1ek9QU4AIi0Nr?format=jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.quote-image.html",
+    "url": "https://twitter.com/ImageLnk/status/1669001600147533826",
+    "result": {
+      "title": "ImageLnk: Quote Tweet with image",
+      "imageUrls": ["https://pbs.twimg.com/media/Fyl8G0maMAED806?format=jpg"],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.url.html",
+    "url": "https://twitter.com/ImageLnk/status/1669002498085126144",
+    "result": {
+      "title": "ImageLnk: Tweet with URL",
+      "imageUrls": [],
+      "extraURLs": ["https://t.co/Gs5ISNTsRU"]
+    }
+  },
+  {
+    "filename": "twitter.url-image.html",
+    "url": "https://twitter.com/ImageLnk/status/1669002668117987330",
+    "result": {
+      "title": "ImageLnk: Tweet with URL and image  https://t.co/Gs5ISNTsRU ",
+      "imageUrls": ["https://pbs.twimg.com/media/Fyl9FGnaQAAgmsS?format=jpg"],
+      "extraURLs": ["https://t.co/Gs5ISNTsRU"]
+    }
+  },
+  {
+    "filename": "twitter.restricted.html",
+    "url": "https://twitter.com/ImageLnk/status/1669134506706731008",
+    "result": {
+      "title": "ImageLnk: Restricted image",
+      "imageUrls": ["https://pbs.twimg.com/media/Fyn0-HLaYAAs8Uw?format=jpg"],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.video.html",
+    "url": "https://twitter.com/ImageLnk/status/1670276975968276482",
+    "result": {
+      "title": "ImageLnk: Video",
+      "imageUrls": [
+        "https://pbs.twimg.com/ext_tw_video_thumb/1670276940291510272/pr/img/En__7znbId_BWQZk.jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.video-mediaviewer.html",
+    "url": "https://twitter.com/ImageLnk/status/1670276975968276482/mediaviewer",
+    "result": {
+      "title": "ImageLnk: Video",
+      "imageUrls": [
+        "https://pbs.twimg.com/ext_tw_video_thumb/1670276940291510272/pr/img/En__7znbId_BWQZk.jpg"
+      ],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.emoji.html",
+    "url": "https://twitter.com/ImageLnk/status/1670348085061652480",
+    "result": {
+      "title": "ImageLnk: emoji 🐱🐱emoji",
+      "imageUrls": [],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "twitter.reply.html",
+    "url": "https://twitter.com/ImageLnk/status/1670350649484267520",
+    "result": {
+      "title": "ImageLnk: reply 🐈🐈reply",
+      "imageUrls": [],
+      "extraURLs": []
+    }
+  },
+  //
+  // zht
+  //
+  {
+    "filename": "zht.header.html",
+    "url": "http://risky-safety.org/~zinnia/d/2023/06/#20230604-t0-h1-p0",
+    "result": {
+      "title": "カメラ",
+      "imageUrls": [],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "zht.text.html",
+    "url": "http://risky-safety.org/~zinnia/d/2023/06/#20230604-t0-h1-p1",
+    "result": {
+      "title": "E-PM2とSuper-Multi-Coated Takumar 28mm F3.5 の組み合わせが快適すぎて 出番がかなり増えている。",
+      "imageUrls": [],
+      "extraURLs": []
+    }
+  }
+]

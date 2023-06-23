@@ -1,0 +1,24 @@
+hostname = "localhost"
+port = 8930
+
+imageCacheDirectory = "/tmp/imagelnk2"
+imageCacheURL = "https://example.com"
+
+[amazoncojp]
+# Extract from browser's cookies.
+sessionToken = "1234567890abcdef1234567890abcde1234567890abcdef1234567890abcde..."
+sessionID    = "123-1234567-1234567"
+
+[amazoncom]
+# Extract from browser's cookies.
+sessionToken = "1234567890abcdef1234567890abcde1234567890abcdef1234567890abcde..."
+sessionID    = "123-1234567-1234567"
+
+[pixiv]
+# Extract from browser's cookies.
+phpSessionID = "123456_1234567890abcdef1234567890abcdef"
+deviceToken  = "1234567890abcdef1234567890abcde"
+
+[twitter]
+# Extract from browser's cookies.
+authToken = "1234567890abcdef1234567890abcdef12345678"
