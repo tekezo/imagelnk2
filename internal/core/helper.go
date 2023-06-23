@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	spaceRegex       = regexp.MustCompile(`\s+`)
-	contentTypeRegex = regexp.MustCompile(`^([^;]+)`)
-	elementTimeout   = 100 * time.Millisecond
+	spaceRegexp       = regexp.MustCompile(`\s+`)
+	contentTypeRegexp = regexp.MustCompile(`^([^;]+)`)
+	elementTimeout    = 100 * time.Millisecond
 )
 
 func ReadConfig() error {
@@ -65,7 +65,7 @@ func OpenPage(
 
 			if contentType, ok := ctx.Response.Headers()["Content-Type"]; ok {
 				if len(contentType) > 0 {
-					m := contentTypeRegex.FindStringSubmatch(contentType[0])
+					m := contentTypeRegexp.FindStringSubmatch(contentType[0])
 					if len(m) > 0 {
 						mime = m[0]
 					}
@@ -159,7 +159,7 @@ func FindElement(element *rod.Element, selector string) *rod.Element {
 func GetTitle(page *rod.Page) string {
 	title := FindElementInPage(page, "title")
 	if title != nil {
-		return spaceRegex.ReplaceAllString(strings.TrimSpace(title.MustText()), " ")
+		return spaceRegexp.ReplaceAllString(strings.TrimSpace(title.MustText()), " ")
 	}
 
 	return ""

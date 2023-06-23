@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	urlRegexp              = regexp.MustCompile(`^(https://twitter.com/[^/]+/status/[^/]+)`)
-	imageURLNameQueryRegex = regexp.MustCompile(`&name=[^&]+$`)
+	urlRegexp               = regexp.MustCompile(`^(https://twitter.com/[^/]+/status/[^/]+)`)
+	imageURLNameQueryRegexp = regexp.MustCompile(`&name=[^&]+$`)
 )
 
 type Twitter struct {
@@ -140,7 +140,7 @@ func (t Twitter) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result
 						if src != "" {
 							// src == "https://pbs.twimg.com/media/Ef1ej1WUYAATrzu?format=jpg&name=900x900"
 							// Remove name=XXX query to avoid image shrinkage.
-							imageURL := imageURLNameQueryRegex.ReplaceAllString(src, "")
+							imageURL := imageURLNameQueryRegexp.ReplaceAllString(src, "")
 
 							result.AppendImageURL(imageURL)
 						}
