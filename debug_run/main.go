@@ -10,6 +10,8 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"regexp"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-rod/rod"
@@ -83,13 +85,41 @@ func main() {
 
 		log.Printf("%v", result)
 
+		//
+		// Test Title
+		//
+
 		if debugEntry.Result.Title != result.Title {
 			log.Fatalf("`%s` != `%s`", debugEntry.Result.Title, result.Title)
 		}
 
-		if !reflect.DeepEqual(debugEntry.Result.ImageURLs, result.ImageURLs) {
+		//
+		// Test ImageURLs
+		//
+
+		if len(debugEntry.Result.ImageURLs) != len(result.ImageURLs) {
 			log.Fatalf("`%v` != `%v`", debugEntry.Result.ImageURLs, result.ImageURLs)
 		}
+
+		for i := 0; i < len(debugEntry.Result.ImageURLs); i++ {
+			expected := debugEntry.Result.ImageURLs[i]
+			actual := result.ImageURLs[i]
+
+			if strings.HasPrefix(expected, "regexp:") {
+				r := regexp.MustCompile(strings.TrimPrefix(expected, "regexp:"))
+				if !r.MatchString(actual) {
+					log.Fatalf("`%v` != `%v`", expected, actual)
+				}
+			} else {
+				if expected != actual {
+					log.Fatalf("`%v` != `%v`", expected, actual)
+				}
+			}
+		}
+
+		//
+		// Test ExtraURLs
+		//
 
 		if !reflect.DeepEqual(debugEntry.Result.ExtraURLs, result.ExtraURLs) {
 			log.Fatalf("`%v` != `%v`", debugEntry.Result.ExtraURLs, result.ExtraURLs)

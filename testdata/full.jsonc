@@ -34,12 +34,11 @@
     "result": {
       "title": "Amazon.co.jp: Anker Nano II 65W (PD 充電器 USB-C)【独自技術Anker GaN II採用/PD対応/PSE技術基準適合/折りたたみ式プラグ】MacBook PD対応Windows PC iPad iPhone Galaxy Android スマートフォン ノートPC 各種 その他機器対応 (ブラック) : 家電＆カメラ",
       "imageUrls": [
-        //
         // There are several patterns of image URLs returned by amazon.
-        //
+        // - https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg
+        // - https://m.media-amazon.com/images/I/616HWFy9cVS.__AC_SX300_SY300_QL70_ML2_.jpg
 
-        //"https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg"
-        "https://m.media-amazon.com/images/I/616HWFy9cVS.__AC_SX300_SY300_QL70_ML2_.jpg"
+        "regexp:https://m\\.media-amazon\\.com/images/I/616HWFy9cVS\\..+\\.jpg"
       ],
       "extraURLs": []
     }
@@ -55,12 +54,10 @@
     "result": {
       "title": "Amazon.com: Kensington SlimBlade™ Pro Wireless Trackball, Rechargeable Battery, Bluetooth 2.4GHz Connection Options (K72080WW) : Electronics",
       "imageUrls": [
-        //
         // There are several patterns of image URLs returned by amazon.
-        //
-
-        "https://m.media-amazon.com/images/I/61A9ebYDldL._AC_SX425_.jpg"
-        //"https://m.media-amazon.com/images/I/61A9ebYDldL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+        // - https://m.media-amazon.com/images/I/61A9ebYDldL._AC_SX425_.jpg
+        // - https://m.media-amazon.com/images/I/61A9ebYDldL.__AC_SX300_SY300_QL70_FMwebp_.jpg
+        "regexp:https://m\\.media-amazon\\.com/images/I/61A9ebYDldL\\..+\\.jpg"
       ],
       "extraURLs": []
     }
