@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-rod/rod v0.113.4
+	github.com/go-rod/stealth v0.4.9
 	github.com/h2non/bimg v1.1.9
 	github.com/spf13/viper v1.16.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4

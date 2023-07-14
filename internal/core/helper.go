@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
+	"github.com/go-rod/stealth"
 	"github.com/spf13/viper"
 	"golang.org/x/exp/slices"
 )
@@ -53,7 +54,7 @@ func OpenPage(
 	url string,
 	options OpenPageOptions,
 ) (page *rod.Page, mime string, body []byte, err error) {
-	page = browser.MustPage()
+	page = stealth.MustPage(browser)
 
 	if options.SupportRawImage {
 		router := page.HijackRequests()
