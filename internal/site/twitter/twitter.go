@@ -62,11 +62,21 @@ func (t Twitter) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result
 	// timeURL == "/ImageLnk/status/1670350649484267520"
 	timeURL := strings.TrimPrefix(ogURL, "https://twitter.com")
 
+	// Edited tweet have history element instead of time element.
+	// historyURL == "/C2_STAFF/status/1679790222937296898/history"
+	historyURL := timeURL + "/history"
+
 	var tweet *rod.Element
 	if elements, err := page.Elements(`*[data-testid="tweet"]`); err == nil {
 		for _, e := range elements {
 			timeElement := core.FindElement(e, fmt.Sprintf(`a[href="%s"]`, timeURL))
 			if timeElement != nil {
+				tweet = e
+				break
+			}
+
+			historyElement := core.FindElement(e, fmt.Sprintf(`a[href="%s"]`, historyURL))
+			if historyElement != nil {
 				tweet = e
 				break
 			}
