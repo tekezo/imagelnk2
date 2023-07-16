@@ -40,7 +40,12 @@ func SaveImageCache(data []byte) (string, error) {
 		thumbnailHeight = 160 * 3
 	}
 
-	thumbnail, err := img.ForceResize(int(thumbnailWidth), int(thumbnailHeight))
+	thumbnailData, err := img.Convert(bimg.JPEG)
+	if err != nil {
+		return "", err
+	}
+
+	thumbnail, err := bimg.NewImage(thumbnailData).ForceResize(int(thumbnailWidth), int(thumbnailHeight))
 	if err != nil {
 		return "", err
 	}
