@@ -51,9 +51,9 @@ func (a Amazon) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result,
 		return nil, core.NewErrMandatoryElementNotFound("title")
 	}
 
-	img := core.FindElementInPage(page, `#landingImage`)
+	img := core.FindElementInPage(page, `img[data-old-hires]`)
 	if img != nil {
-		src := core.GetAttribute(img, "src")
+		src := core.GetAttribute(img, "data-old-hires")
 		if src != "" {
 			result.AppendImageURL(src)
 		}
