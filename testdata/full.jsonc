@@ -38,7 +38,7 @@
         // - https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg
         // - https://m.media-amazon.com/images/I/616HWFy9cVS.__AC_SX300_SY300_QL70_ML2_.jpg
 
-        "regexp:https://m\\.media-amazon\\.com/images/I/616HWFy9cVS\\..+\\.jpg"
+        "regexp:^https://m\\.media-amazon\\.com/images/I/616HWFy9cVS\\..+\\.jpg"
       ],
       "extraURLs": []
     }
@@ -57,7 +57,7 @@
         // There are several patterns of image URLs returned by amazon.
         // - https://m.media-amazon.com/images/I/61A9ebYDldL._AC_SX425_.jpg
         // - https://m.media-amazon.com/images/I/61A9ebYDldL.__AC_SX300_SY300_QL70_FMwebp_.jpg
-        "regexp:https://m\\.media-amazon\\.com/images/I/61A9ebYDldL\\..+\\.jpg"
+        "regexp:^https://m\\.media-amazon\\.com/images/I/61A9ebYDldL\\..+\\.jpg"
       ],
       "extraURLs": []
     }
@@ -100,10 +100,10 @@
     "result": {
       "title": "ImageLnk: Images",
       "imageUrls": [
-        "https://pbs.twimg.com/media/Ef1efyBU0AEgknd?format=jpg",
-        "https://pbs.twimg.com/media/Ef1ehO8VoAEitBi?format=jpg",
-        "https://pbs.twimg.com/media/Ef1ej1WUYAAzKwn?format=jpg",
-        "https://pbs.twimg.com/media/Ef1ek9QU4AIi0Nr?format=jpg"
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1efyBU0AEgknd\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ehO8VoAEitBi\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ej1WUYAAzKwn\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ek9QU4AIi0Nr\\?format=.+"
       ],
       "extraURLs": []
     }
@@ -114,10 +114,10 @@
     "result": {
       "title": "ImageLnk: Quote Tweet",
       "imageUrls": [
-        "https://pbs.twimg.com/media/Ef1efyBU0AEgknd?format=jpg",
-        "https://pbs.twimg.com/media/Ef1ehO8VoAEitBi?format=jpg",
-        "https://pbs.twimg.com/media/Ef1ej1WUYAAzKwn?format=jpg",
-        "https://pbs.twimg.com/media/Ef1ek9QU4AIi0Nr?format=jpg"
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1efyBU0AEgknd\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ehO8VoAEitBi\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ej1WUYAAzKwn\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ek9QU4AIi0Nr\\?format=.+"
       ],
       "extraURLs": []
     }
@@ -127,7 +127,7 @@
     "url": "https://twitter.com/ImageLnk/status/1669001600147533826",
     "result": {
       "title": "ImageLnk: Quote Tweet with image",
-      "imageUrls": ["https://pbs.twimg.com/media/Fyl8G0maMAED806?format=jpg"],
+      "imageUrls": ["regexp:^https://pbs\\.twimg\\.com/media/Fyl8G0maMAED806\\?format=.+"],
       "extraURLs": []
     }
   },
@@ -145,7 +145,7 @@
     "url": "https://twitter.com/ImageLnk/status/1669002668117987330",
     "result": {
       "title": "ImageLnk: Tweet with URL and image  https://t.co/Gs5ISNTsRU ",
-      "imageUrls": ["https://pbs.twimg.com/media/Fyl9FGnaQAAgmsS?format=jpg"],
+      "imageUrls": ["regexp:^https://pbs\\.twimg\\.com/media/Fyl9FGnaQAAgmsS\\?format=.+"],
       "extraURLs": ["https://t.co/Gs5ISNTsRU"]
     }
   },
@@ -154,7 +154,7 @@
     "url": "https://twitter.com/ImageLnk/status/1669134506706731008",
     "result": {
       "title": "ImageLnk: Restricted image",
-      "imageUrls": ["https://pbs.twimg.com/media/Fyn0-HLaYAAs8Uw?format=jpg"],
+      "imageUrls": ["regexp:^https://pbs\\.twimg\\.com/media/Fyn0-HLaYAAs8Uw\\?format=.+"],
       "extraURLs": []
     }
   },
@@ -164,7 +164,7 @@
     "result": {
       "title": "ImageLnk: Video",
       "imageUrls": [
-        "https://pbs.twimg.com/ext_tw_video_thumb/1670276940291510272/pr/img/En__7znbId_BWQZk.jpg"
+        "regexp:^https://pbs\\.twimg\\.com/ext_tw_video_thumb/1670276940291510272/pr/img/En__7znbId_BWQZk\\..+"
       ],
       "extraURLs": []
     }
@@ -175,7 +175,7 @@
     "result": {
       "title": "ImageLnk: Video",
       "imageUrls": [
-        "https://pbs.twimg.com/ext_tw_video_thumb/1670276940291510272/pr/img/En__7znbId_BWQZk.jpg"
+        "regexp:^https://pbs\\.twimg\\.com/ext_tw_video_thumb/1670276940291510272/pr/img/En__7znbId_BWQZk\\..+"
       ],
       "extraURLs": []
     }
