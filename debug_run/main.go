@@ -108,7 +108,7 @@ func main() {
 			if strings.HasPrefix(expected, "regexp:") {
 				r := regexp.MustCompile(strings.TrimPrefix(expected, "regexp:"))
 				if !r.MatchString(actual) {
-					log.Fatalf("`%v` != `%v`", expected, actual)
+					log.Fatalf("`%v` is not matched `%v`", actual, r)
 				}
 			} else {
 				if expected != actual {
