@@ -1,10 +1,15 @@
 [
   {
     "filename": "single.html",
-    "url": "https://twitter.com/TwitterBlue/status/1575590534529556480",
+    "url": "https://twitter.com/ImageLnk/status/1296296267526500353",
     "result": {
-      "title": "",
-      "imageUrls": [""],
+      "title": "ImageLnk: Images",
+      "imageUrls": [
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1efyBU0AEgknd\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ehO8VoAEitBi\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ej1WUYAAzKwn\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ek9QU4AIi0Nr\\?format=.+"
+      ],
       "extraURLs": []
     }
   }

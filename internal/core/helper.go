@@ -47,6 +47,8 @@ func ReadConfig() error {
 type OpenPageOptions struct {
 	Cookies         []*proto.NetworkCookieParam
 	SupportRawImage bool
+	WaitNavigation  bool
+	WaitRequestIdle bool
 }
 
 func OpenPage(
@@ -83,14 +85,24 @@ func OpenPage(
 		page.SetCookies(options.Cookies)
 	}
 
-	//waitNavigation := page.Timeout(5 * time.Second).MustWaitNavigation()
-	//waitRequestIdle := page.Timeout(5 * time.Second).MustWaitRequestIdle()
+	var waitNavigation func()
+	if options.WaitNavigation {
+		waitNavigation = page.Timeout(5 * time.Second).MustWaitNavigation()
+	}
+	var waitRequestIdle func()
+	if options.WaitRequestIdle {
+		waitRequestIdle = page.Timeout(5 * time.Second).MustWaitRequestIdle()
+	}
 
 	page.MustNavigate(url)
 
 	err = rod.Try(func() {
-		//waitNavigation()
-		//waitRequestIdle()
+		if waitRequestIdle != nil {
+			waitRequestIdle()
+		}
+		if waitNavigation != nil {
+			waitNavigation()
+		}
 
 		page.MustWaitStable()
 	})

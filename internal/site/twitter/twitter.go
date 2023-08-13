@@ -43,6 +43,8 @@ func (t Twitter) OpenPage(url string) (*rod.Page, string, []byte, error) {
 			},
 		},
 		SupportRawImage: false,
+		WaitNavigation:  true,
+		WaitRequestIdle: true,
 	})
 }
 
