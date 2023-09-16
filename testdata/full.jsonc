@@ -32,7 +32,7 @@
     "filename": "amazoncojp.html",
     "url": "https://www.amazon.co.jp/dp/B08X11GD52/",
     "result": {
-      "title": "Amazon.co.jp: Anker Nano II 65W (PD 充電器 USB-C)【独自技術Anker GaN II採用/PD対応/PSE技術基準適合/折りたたみ式プラグ】MacBook PD対応Windows PC iPad iPhone Galaxy Android スマートフォン ノートPC 各種 その他機器対応 (ブラック) : 家電＆カメラ",
+      "title": "Amazon | Anker Nano II 65W (PD 充電器 USB-C)【独自技術Anker GaN II採用/PD対応/PSE技術基準適合/折りたたみ式プラグ】MacBook PD対応Windows PC iPad iPhone Galaxy Android スマートフォン ノートPC 各種 その他機器対応 (ブラック) | AC式充電器 通販",
       "imageUrls": [
         // There are several patterns of image URLs returned by amazon.
         // - https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg
@@ -127,7 +127,9 @@
     "url": "https://twitter.com/ImageLnk/status/1669001600147533826",
     "result": {
       "title": "ImageLnk: Quote Tweet with image",
-      "imageUrls": ["regexp:^https://pbs\\.twimg\\.com/media/Fyl8G0maMAED806\\?format=.+"],
+      "imageUrls": [
+        "regexp:^https://pbs\\.twimg\\.com/media/Fyl8G0maMAED806\\?format=.+"
+      ],
       "extraURLs": []
     }
   },
@@ -145,7 +147,9 @@
     "url": "https://twitter.com/ImageLnk/status/1669002668117987330",
     "result": {
       "title": "ImageLnk: Tweet with URL and image  https://t.co/Gs5ISNTsRU ",
-      "imageUrls": ["regexp:^https://pbs\\.twimg\\.com/media/Fyl9FGnaQAAgmsS\\?format=.+"],
+      "imageUrls": [
+        "regexp:^https://pbs\\.twimg\\.com/media/Fyl9FGnaQAAgmsS\\?format=.+"
+      ],
       "extraURLs": ["https://t.co/Gs5ISNTsRU"]
     }
   },
@@ -154,7 +158,9 @@
     "url": "https://twitter.com/ImageLnk/status/1669134506706731008",
     "result": {
       "title": "ImageLnk: Restricted image",
-      "imageUrls": ["regexp:^https://pbs\\.twimg\\.com/media/Fyn0-HLaYAAs8Uw\\?format=.+"],
+      "imageUrls": [
+        "regexp:^https://pbs\\.twimg\\.com/media/Fyn0-HLaYAAs8Uw\\?format=.+"
+      ],
       "extraURLs": []
     }
   },
@@ -195,6 +201,20 @@
     "result": {
       "title": "ImageLnk: reply 🐈🐈reply",
       "imageUrls": [],
+      "extraURLs": []
+    }
+  },
+  {
+    "filename": "xcom.images.html",
+    "url": "https://x.com/ImageLnk/status/1296296267526500353",
+    "result": {
+      "title": "ImageLnk: Images",
+      "imageUrls": [
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1efyBU0AEgknd\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ehO8VoAEitBi\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ej1WUYAAzKwn\\?format=.+",
+        "regexp:^https://pbs\\.twimg\\.com/media/Ef1ek9QU4AIi0Nr\\?format=.+"
+      ],
       "extraURLs": []
     }
   },

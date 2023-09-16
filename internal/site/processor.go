@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -20,6 +21,10 @@ import (
 	"github.com/go-rod/rod/lib/proto"
 	"github.com/yosssi/gohtml"
 	"golang.org/x/exp/slices"
+)
+
+var (
+	xcomURLRegexp = regexp.MustCompile(`^https://x\.com/`)
 )
 
 type Processor struct {
@@ -42,6 +47,8 @@ func NewProcessor(browser *rod.Browser) Processor {
 }
 
 func (p Processor) GetImageURLs(url string) (*core.Result, error) {
+	url = p.redirectedURL(url)
+
 	site, canonicalURL := p.findSite(url)
 	if site != nil {
 		page, mime, body, err := (*site).OpenPage(canonicalURL)
@@ -135,6 +142,8 @@ func (p Processor) GetImageURLs(url string) (*core.Result, error) {
 }
 
 func (p Processor) SaveHTML(url string, filename string) error {
+	url = p.redirectedURL(url)
+
 	site, canonicalURL := p.findSite(url)
 	if site != nil {
 		log.Printf("open: %s", canonicalURL)
@@ -196,6 +205,8 @@ func (p Processor) SaveHTML(url string, filename string) error {
 }
 
 func (p Processor) Debug(url string, path string) (*core.Result, error) {
+	url = p.redirectedURL(url)
+
 	site, _ := p.findSite(url)
 	if site != nil {
 		testdataURL := fmt.Sprintf("http://%s:%d/testdata?filename=%s", core.Config.Hostname, core.Config.Port, path)
@@ -216,6 +227,11 @@ func (p Processor) Debug(url string, path string) (*core.Result, error) {
 	}
 
 	return nil, fmt.Errorf("no site is matched")
+}
+
+func (p Processor) redirectedURL(url string) string {
+	url = xcomURLRegexp.ReplaceAllString(url, "https://twitter.com/")
+	return url
 }
 
 func (p Processor) findSite(url string) (site *core.Site, canonicalURL string) {

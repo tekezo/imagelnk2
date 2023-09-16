@@ -7,6 +7,9 @@ build: staticcheck
 run: staticcheck build
 	PORT=1314 ./imagelnk2
 
+test:
+	go test ./...
+
 debug_fetch_full:
 	PORT=1315 go run debug_fetch/main.go testdata/full.jsonc
 
