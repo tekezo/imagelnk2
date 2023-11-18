@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"imagelnk2/internal/core"
 	"regexp"
-	"strings"
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
@@ -12,6 +11,7 @@ import (
 
 var (
 	urlRegexp               = regexp.MustCompile(`^(https://twitter.com/[^/]+/status/[^/]+)`)
+	timeURLRegexp           = regexp.MustCompile(`^https://[^/]+(/[^/]+/status/[^/]+)`)
 	imageURLNameQueryRegexp = regexp.MustCompile(`&name=[^&]+$`)
 )
 
@@ -55,14 +55,12 @@ func (t Twitter) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result
 	// Find tweet element by link
 	//
 
-	// ogURL == "https://twitter.com/ImageLnk/status/1670350649484267520"
-	ogURL := core.GetOpenGraphURL(page)
-	if ogURL == "" {
-		return nil, core.NewErrMandatoryElementNotFound("og.url")
-	}
-
 	// timeURL == "/ImageLnk/status/1670350649484267520"
-	timeURL := strings.TrimPrefix(ogURL, "https://twitter.com")
+	m := timeURLRegexp.FindStringSubmatch(canonicalURL)
+	if m == nil {
+		return nil, fmt.Errorf("unsupported URL %s", canonicalURL)
+	}
+	timeURL := m[1]
 
 	// Edited tweet have history element instead of time element.
 	// historyURL == "/C2_STAFF/status/1679790222937296898/history"
