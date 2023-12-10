@@ -37,7 +37,6 @@
         // There are several patterns of image URLs returned by amazon.
         // - https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg
         // - https://m.media-amazon.com/images/I/616HWFy9cVS.__AC_SX300_SY300_QL70_ML2_.jpg
-
         "regexp:^https://m\\.media-amazon\\.com/images/I/616HWFy9cVS\\..+\\.jpg"
       ],
       "extraURLs": []
@@ -57,7 +56,8 @@
         // There are several patterns of image URLs returned by amazon.
         // - https://m.media-amazon.com/images/I/61A9ebYDldL._AC_SX425_.jpg
         // - https://m.media-amazon.com/images/I/61A9ebYDldL.__AC_SX300_SY300_QL70_FMwebp_.jpg
-        "regexp:^https://m\\.media-amazon\\.com/images/I/61A9ebYDldL\\..+\\.jpg"
+        // - https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61A9ebYDldL._AC_SL1500_.jpg
+        "regexp:^https://m\\.media-amazon\\.com/images/.+/61A9ebYDldL\\..+\\.jpg"
       ],
       "extraURLs": []
     }
