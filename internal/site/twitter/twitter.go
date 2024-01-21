@@ -11,7 +11,7 @@ import (
 
 var (
 	urlRegexp               = regexp.MustCompile(`^(https://twitter.com/[^/]+/status/[^/]+)`)
-	timeURLRegexp           = regexp.MustCompile(`^https://[^/]+(/[^/]+/status/[^/]+)`)
+	timeURLRegexp           = regexp.MustCompile(`^https://[^/]+(/[^/]+/status/\d+)`)
 	imageURLNameQueryRegexp = regexp.MustCompile(`&name=[^&]+$`)
 )
 
@@ -86,7 +86,7 @@ func (t Twitter) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result
 	if tweet == nil {
 		// If tweet is not found, it's age-restricted tweet
 		result.Title = "error: tweet element is not found"
-		return nil, core.NewErrMandatoryElementNotFound("tweet")
+		return nil, core.NewErrMandatoryElementNotFound(fmt.Sprintf("tweet timeURL:%s", timeURL))
 	}
 
 	//
