@@ -89,8 +89,20 @@ func main() {
 		// Test Title
 		//
 
-		if debugEntry.Result.Title != result.Title {
-			log.Fatalf("`%s` != `%s`", debugEntry.Result.Title, result.Title)
+		{
+			expected := debugEntry.Result.Title
+			actual := result.Title
+
+			if strings.HasPrefix(expected, "regexp:") {
+				r := regexp.MustCompile(strings.TrimPrefix(expected, "regexp:"))
+				if !r.MatchString(actual) {
+					log.Fatalf("`%v` is not matched `%v`", actual, r)
+				}
+			} else {
+				if expected != actual {
+					log.Fatalf("`%v` != `%v`", expected, actual)
+				}
+			}
 		}
 
 		//
