@@ -14,11 +14,11 @@
   },
   {
     "filename": "generic.github.html",
-    "url": "https://github.com/twitterdev",
+    "url": "https://github.com/pqrs-org",
     "result": {
-      "title": "@XDevelopers",
+      "title": "pqrs-org",
       "imageUrls": [
-        "https://avatars.githubusercontent.com/u/7451118?s=280&v=4"
+        "https://avatars.githubusercontent.com/u/29721576?s=280&v=4"
       ],
       "extraURLs": []
     }
@@ -137,7 +137,7 @@
     "filename": "twitter.url.html",
     "url": "https://twitter.com/ImageLnk/status/1669002498085126144",
     "result": {
-      "title": "ImageLnk: Tweet with URL",
+      "title": "ImageLnk: Tweet with URL  https://t.co/Gs5ISNTsRU ",
       "imageUrls": [],
       "extraURLs": ["https://t.co/Gs5ISNTsRU"]
     }
