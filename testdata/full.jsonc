@@ -137,7 +137,7 @@
     "filename": "twitter.url.html",
     "url": "https://twitter.com/ImageLnk/status/1669002498085126144",
     "result": {
-      "title": "ImageLnk: Tweet with URL  https://t.co/Gs5ISNTsRU ",
+      "title": "ImageLnk: Tweet with URL",
       "imageUrls": [],
       "extraURLs": ["https://t.co/Gs5ISNTsRU"]
     }
