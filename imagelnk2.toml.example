@@ -19,6 +19,6 @@ sessionID    = "123-1234567-1234567"
 phpSessionID = "123456_1234567890abcdef1234567890abcdef"
 deviceToken  = "1234567890abcdef1234567890abcde"
 
-[twitter]
+[xcom]
 # Extract from browser's cookies.
 authToken = "1234567890abcdef1234567890abcdef12345678"

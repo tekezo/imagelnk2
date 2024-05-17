@@ -22,7 +22,7 @@ type config struct {
 		DeviceToken  string
 	}
 
-	Twitter struct {
+	Xcom struct {
 		AuthToken string
 	}
 }

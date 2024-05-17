@@ -1,4 +1,4 @@
-package twitter
+package xcom
 
 import (
 	"fmt"
@@ -10,22 +10,22 @@ import (
 )
 
 var (
-	urlRegexp               = regexp.MustCompile(`^(https://twitter.com/[^/]+/status/[^/]+)`)
+	urlRegexp               = regexp.MustCompile(`^(https://x.com/[^/]+/status/[^/]+)`)
 	timeURLRegexp           = regexp.MustCompile(`^https://[^/]+(/[^/]+/status/\d+)`)
 	imageURLNameQueryRegexp = regexp.MustCompile(`&name=[^&]+$`)
 )
 
-type Twitter struct {
+type Xcom struct {
 	browser *rod.Browser
 }
 
-func New(browser *rod.Browser) Twitter {
-	return Twitter{
+func New(browser *rod.Browser) Xcom {
+	return Xcom{
 		browser: browser,
 	}
 }
 
-func (t Twitter) GetCanonicalURL(url string) string {
+func (x Xcom) GetCanonicalURL(url string) string {
 	m := urlRegexp.FindStringSubmatch(url)
 	if m == nil {
 		return ""
@@ -33,13 +33,13 @@ func (t Twitter) GetCanonicalURL(url string) string {
 	return m[1]
 }
 
-func (t Twitter) OpenPage(url string) (*rod.Page, string, []byte, error) {
-	return core.OpenPage(t.browser, url, core.OpenPageOptions{
+func (x Xcom) OpenPage(url string) (*rod.Page, string, []byte, error) {
+	return core.OpenPage(x.browser, url, core.OpenPageOptions{
 		Cookies: []*proto.NetworkCookieParam{
 			{
 				Name:   "auth_token",
-				Value:  core.Config.Twitter.AuthToken,
-				Domain: "twitter.com",
+				Value:  core.Config.Xcom.AuthToken,
+				Domain: "x.com",
 			},
 		},
 		SupportRawImage: false,
@@ -48,7 +48,7 @@ func (t Twitter) OpenPage(url string) (*rod.Page, string, []byte, error) {
 	})
 }
 
-func (t Twitter) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, error) {
+func (x Xcom) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, error) {
 	result := core.NewResult()
 
 	//

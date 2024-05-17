@@ -7,7 +7,7 @@ import (
 	"imagelnk2/internal/site/amazoncom"
 	"imagelnk2/internal/site/generic"
 	"imagelnk2/internal/site/pixiv"
-	"imagelnk2/internal/site/twitter"
+	"imagelnk2/internal/site/xcom"
 	"imagelnk2/internal/site/zht"
 	"log"
 	"net/http"
@@ -24,7 +24,7 @@ import (
 )
 
 var (
-	xcomURLRegexp = regexp.MustCompile(`^https://x\.com/`)
+	twitterURLRegexp = regexp.MustCompile(`^https://twitter\.com/`)
 )
 
 type Processor struct {
@@ -39,7 +39,7 @@ func NewProcessor(browser *rod.Browser) Processor {
 			amazoncojp.New(browser),
 			amazoncom.New(browser),
 			pixiv.New(browser),
-			twitter.New(browser),
+			xcom.New(browser),
 			zht.New(browser),
 			generic.New(browser),
 		},
@@ -230,7 +230,7 @@ func (p Processor) Debug(url string, path string) (*core.Result, error) {
 }
 
 func (p Processor) redirectedURL(url string) string {
-	url = xcomURLRegexp.ReplaceAllString(url, "https://twitter.com/")
+	url = twitterURLRegexp.ReplaceAllString(url, "https://x.com/")
 	return url
 }
 

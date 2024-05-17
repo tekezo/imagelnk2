@@ -91,12 +91,12 @@
   },
 
   //
-  // twitter
+  // x.com
   //
 
   {
-    "filename": "twitter.images.html",
-    "url": "https://twitter.com/ImageLnk/status/1296296267526500353?s=20",
+    "filename": "x.com.images.html",
+    "url": "https://x.com/ImageLnk/status/1296296267526500353?s=20",
     "result": {
       "title": "ImageLnk: Images",
       "imageUrls": [
@@ -109,8 +109,8 @@
     }
   },
   {
-    "filename": "twitter.quote.html",
-    "url": "https://twitter.com/ImageLnk/status/1669001451673358336",
+    "filename": "x.com.quote.html",
+    "url": "https://x.com/ImageLnk/status/1669001451673358336",
     "result": {
       "title": "ImageLnk: Quote Tweet",
       "imageUrls": [
@@ -123,8 +123,8 @@
     }
   },
   {
-    "filename": "twitter.quote-image.html",
-    "url": "https://twitter.com/ImageLnk/status/1669001600147533826",
+    "filename": "x.com.quote-image.html",
+    "url": "https://x.com/ImageLnk/status/1669001600147533826",
     "result": {
       "title": "ImageLnk: Quote Tweet with image",
       "imageUrls": [
@@ -134,8 +134,8 @@
     }
   },
   {
-    "filename": "twitter.url.html",
-    "url": "https://twitter.com/ImageLnk/status/1669002498085126144",
+    "filename": "x.com.url.html",
+    "url": "https://x.com/ImageLnk/status/1669002498085126144",
     "result": {
       "title": "ImageLnk: Tweet with URL",
       "imageUrls": [],
@@ -143,8 +143,8 @@
     }
   },
   {
-    "filename": "twitter.url-image.html",
-    "url": "https://twitter.com/ImageLnk/status/1669002668117987330",
+    "filename": "x.com.url-image.html",
+    "url": "https://x.com/ImageLnk/status/1669002668117987330",
     "result": {
       "title": "ImageLnk: Tweet with URL and image  https://t.co/Gs5ISNTsRU ",
       "imageUrls": [
@@ -154,8 +154,8 @@
     }
   },
   {
-    "filename": "twitter.restricted.html",
-    "url": "https://twitter.com/ImageLnk/status/1669134506706731008",
+    "filename": "x.com.restricted.html",
+    "url": "https://x.com/ImageLnk/status/1669134506706731008",
     "result": {
       "title": "ImageLnk: Restricted image",
       "imageUrls": [
@@ -165,8 +165,8 @@
     }
   },
   {
-    "filename": "twitter.video.html",
-    "url": "https://twitter.com/ImageLnk/status/1670276975968276482",
+    "filename": "x.com.video.html",
+    "url": "https://x.com/ImageLnk/status/1670276975968276482",
     "result": {
       "title": "ImageLnk: Video",
       "imageUrls": [
@@ -176,8 +176,8 @@
     }
   },
   {
-    "filename": "twitter.video-mediaviewer.html",
-    "url": "https://twitter.com/ImageLnk/status/1670276975968276482/mediaviewer",
+    "filename": "x.com.video-mediaviewer.html",
+    "url": "https://x.com/ImageLnk/status/1670276975968276482/mediaviewer",
     "result": {
       "title": "ImageLnk: Video",
       "imageUrls": [
@@ -187,8 +187,8 @@
     }
   },
   {
-    "filename": "twitter.emoji.html",
-    "url": "https://twitter.com/ImageLnk/status/1670348085061652480",
+    "filename": "x.com.emoji.html",
+    "url": "https://x.com/ImageLnk/status/1670348085061652480",
     "result": {
       "title": "ImageLnk: emoji 🐱🐱emoji",
       "imageUrls": [],
@@ -196,8 +196,8 @@
     }
   },
   {
-    "filename": "twitter.reply.html",
-    "url": "https://twitter.com/ImageLnk/status/1670350649484267520",
+    "filename": "x.com.reply.html",
+    "url": "https://x.com/ImageLnk/status/1670350649484267520",
     "result": {
       "title": "ImageLnk: reply 🐈🐈reply",
       "imageUrls": [],
