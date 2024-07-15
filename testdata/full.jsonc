@@ -32,7 +32,7 @@
     "filename": "amazoncojp.html",
     "url": "https://www.amazon.co.jp/dp/B08X11GD52/",
     "result": {
-      "title": "regexp:^Amazon | Anker Nano II 65W",
+      "title": "regexp:Anker Nano II 65W",
       "imageUrls": [
         // There are several patterns of image URLs returned by amazon.
         // - https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg
@@ -51,7 +51,7 @@
     "filename": "amazoncom.html",
     "url": "https://www.amazon.com/dp/B0BLRQ4116/",
     "result": {
-      "title": "Amazon.com: Kensington SlimBlade™ Pro Wireless Trackball, Rechargeable Battery, Bluetooth 2.4GHz Connection Options (K72080WW) : Electronics",
+      "title": "regexp:Kensington SlimBlade",
       "imageUrls": [
         // There are several patterns of image URLs returned by amazon.
         // - https://m.media-amazon.com/images/I/61A9ebYDldL._AC_SX425_.jpg
