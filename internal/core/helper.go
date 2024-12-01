@@ -172,10 +172,14 @@ func FindElement(element *rod.Element, selector string) *rod.Element {
 func GetTitle(page *rod.Page) string {
 	title := FindElementInPage(page, "title")
 	if title != nil {
-		return spaceRegexp.ReplaceAllString(strings.TrimSpace(title.MustText()), " ")
+		return FormatTitle(title.MustText())
 	}
 
 	return ""
+}
+
+func FormatTitle(title string) string {
+	return spaceRegexp.ReplaceAllString(strings.TrimSpace(title), " ")
 }
 
 func GetOpenGraphTitle(page *rod.Page) string {

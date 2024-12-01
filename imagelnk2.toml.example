@@ -14,6 +14,10 @@ sessionID    = "123-1234567-1234567"
 sessionToken = "1234567890abcdef1234567890abcde1234567890abcdef1234567890abcde..."
 sessionID    = "123-1234567-1234567"
 
+[bluesky]
+identifier = "example.bsky.social"
+password   = "1234-5678-abcd-efgh"
+
 [pixiv]
 # Extract from browser's cookies.
 phpSessionID = "123456_1234567890abcdef1234567890abcdef"

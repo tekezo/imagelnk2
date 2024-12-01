@@ -17,6 +17,11 @@ type config struct {
 		SessionID    string
 	}
 
+	Bluesky struct {
+		Identifier string
+		Password   string
+	}
+
 	Pixiv struct {
 		PHPSessionID string
 		DeviceToken  string
