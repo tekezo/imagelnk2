@@ -1,4 +1,4 @@
-package site
+package processor
 
 import (
 	"fmt"
@@ -32,7 +32,7 @@ type Processor struct {
 	sites   []core.Site
 }
 
-func NewProcessor(browser *rod.Browser) Processor {
+func New(browser *rod.Browser) Processor {
 	return Processor{
 		browser: browser,
 		sites: []core.Site{

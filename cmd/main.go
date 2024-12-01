@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"imagelnk2/internal/core"
-	"imagelnk2/internal/site"
+	"imagelnk2/internal/processor"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ func main() {
 	browser := rod.New().ControlURL(controlURL).MustConnect()
 	defer browser.MustClose()
 
-	processor := site.NewProcessor(browser)
+	processor := processor.New(browser)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"imagelnk2/internal/core"
 	"imagelnk2/internal/debug"
-	"imagelnk2/internal/site"
+	"imagelnk2/internal/processor"
 	"log"
 	"os"
 	"path/filepath"
@@ -28,7 +28,7 @@ func main() {
 	browser := rod.New().ControlURL(controlURL).MustConnect()
 	defer browser.MustClose()
 
-	processor := site.NewProcessor(browser)
+	processor := processor.New(browser)
 
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: debug_fetch json")
