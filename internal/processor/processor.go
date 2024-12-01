@@ -1,7 +1,9 @@
 package processor
 
 import (
+	"context"
 	"fmt"
+	"imagelnk2/internal/apiclients/bluesky"
 	"imagelnk2/internal/core"
 	"imagelnk2/internal/site/amazoncojp"
 	"imagelnk2/internal/site/amazoncom"
@@ -10,7 +12,6 @@ import (
 	"imagelnk2/internal/site/xcom"
 	"imagelnk2/internal/site/zht"
 	"log"
-	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -18,9 +19,7 @@ import (
 	"time"
 
 	"github.com/go-rod/rod"
-	"github.com/go-rod/rod/lib/proto"
 	"github.com/yosssi/gohtml"
-	"golang.org/x/exp/slices"
 )
 
 var (
@@ -28,13 +27,17 @@ var (
 )
 
 type Processor struct {
-	browser *rod.Browser
-	sites   []core.Site
+	browser    *rod.Browser
+	apiClients []core.APIClient
+	sites      []core.Site
 }
 
 func New(browser *rod.Browser) Processor {
 	return Processor{
 		browser: browser,
+		apiClients: []core.APIClient{
+			bluesky.New(),
+		},
 		sites: []core.Site{
 			amazoncojp.New(browser),
 			amazoncom.New(browser),
@@ -46,8 +49,21 @@ func New(browser *rod.Browser) Processor {
 	}
 }
 
-func (p Processor) GetImageURLs(url string) (*core.Result, error) {
+func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, error) {
 	url = p.redirectedURL(url)
+
+	apiClient, canonicalURL := p.findAPIClient(url)
+	if apiClient != nil {
+		result, err := (*apiClient).GetImageURLs(ctx, canonicalURL)
+		if err != nil {
+			return nil, err
+		}
+
+		page := rod.New().MustConnect().MustPage()
+
+		result.SaveImageCache(page, canonicalURL)
+		return result, nil
+	}
 
 	site, canonicalURL := p.findSite(url)
 	if site != nil {
@@ -79,66 +95,11 @@ func (p Processor) GetImageURLs(url string) (*core.Result, error) {
 			return nil, err
 		}
 
-		//
-		// Save images
-		//
-
-		// When a request is made for an image, the request may be recursive with different types (Document and Image) for the same URL.
-		// In such cases, only the first result is used, so remember the URLs that have already been added.
-		savedImageURLs := []string{}
-
-		page = page.CancelTimeout().Timeout(30 * time.Second)
-
-		router := page.HijackRequests()
-		defer router.MustStop()
-		go router.Run()
-
-		router.MustAdd("*", func(ctx *rod.Hijack) {
-			url := ctx.Request.URL().String()
-
-			if slices.Contains(result.ImageURLs, url) {
-				log.Printf("hijack %s %s", ctx.Request.Type(), ctx.Request.URL())
-
-				err = ctx.LoadResponse(http.DefaultClient, true)
-
-				if err == nil {
-					if !slices.Contains(savedImageURLs, url) {
-						savedImageURLs = append(savedImageURLs, url)
-
-						url, err := core.SaveImageCache(
-							[]byte(ctx.Response.Body()),
-						)
-						if err != nil {
-							log.Print(err)
-						} else {
-							result.AppendImageCacheURL(url)
-						}
-					}
-				}
-			}
-
-			ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
-		})
-
-		cleanup := page.MustSetExtraHeaders("Referer", canonicalURL)
-		defer cleanup()
-
-		for _, imageURL := range result.ImageURLs {
-			log.Printf("save image cache: %s", imageURL)
-
-			waitNavigation := page.Timeout(5 * time.Second).MustWaitNavigation()
-			page.Timeout(5 * time.Second).Navigate(imageURL)
-			waitNavigation()
-
-			if len(result.ImageCacheURLs) > 4 {
-				break
-			}
-		}
-
+		result.SaveImageCache(page, canonicalURL)
 		return result, nil
 	}
 
-	return nil, fmt.Errorf("no site is matched")
+	return nil, fmt.Errorf("no matching apiClient and site found")
 }
 
 func (p Processor) SaveHTML(url string, filename string) error {
@@ -207,6 +168,16 @@ func (p Processor) SaveHTML(url string, filename string) error {
 func (p Processor) Debug(url string, path string) (*core.Result, error) {
 	url = p.redirectedURL(url)
 
+	apiClient, _ := p.findAPIClient(url)
+	if apiClient != nil {
+		result, err := (*apiClient).GetImageURLs(context.Background(), url)
+		if err != nil {
+			return nil, err
+		}
+
+		return result, nil
+	}
+
 	site, _ := p.findSite(url)
 	if site != nil {
 		testdataURL := fmt.Sprintf("http://%s:%d/testdata?filename=%s", core.Config.Hostname, core.Config.Port, path)
@@ -226,12 +197,24 @@ func (p Processor) Debug(url string, path string) (*core.Result, error) {
 		return (*site).GetImageURLs(page, url)
 	}
 
-	return nil, fmt.Errorf("no site is matched")
+	return nil, fmt.Errorf("no matching apiClient and site found")
 }
 
 func (p Processor) redirectedURL(url string) string {
 	url = twitterURLRegexp.ReplaceAllString(url, "https://x.com/")
 	return url
+}
+
+func (p Processor) findAPIClient(url string) (apiClinet *core.APIClient, canonicalURL string) {
+	for _, c := range p.apiClients {
+		canonicalURL = c.GetCanonicalURL(url)
+		if canonicalURL != "" {
+			apiClinet = &c
+			return
+		}
+	}
+
+	return
 }
 
 func (p Processor) findSite(url string) (site *core.Site, canonicalURL string) {

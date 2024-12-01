@@ -9,7 +9,6 @@ import (
 	"github.com/bluesky-social/indigo/api/atproto"
 	"github.com/bluesky-social/indigo/api/bsky"
 	"github.com/bluesky-social/indigo/xrpc"
-	"github.com/go-rod/rod"
 )
 
 var (
@@ -19,7 +18,7 @@ var (
 type Bluesky struct {
 }
 
-func New(browser *rod.Browser) Bluesky {
+func New() Bluesky {
 	return Bluesky{}
 }
 

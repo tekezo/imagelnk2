@@ -64,6 +64,22 @@
   },
 
   //
+  // bluesky
+  //
+
+  {
+    "filename": "bluesky.html",
+    "url": "https://bsky.app/profile/bsky.app/post/3l47prg3wgy23",
+    "result": {
+      "title": "Bluesky: If you're reading this, you're one of the first 10 million users on Bluesky! Se você está lendo isso, você é um dos primeiros 10 milhões de usuários do Bluesky!",
+      "imageUrls": [
+        "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:z72i7hdynmk6r22z27h6tvur/bafkreiekiwtndeluym7ixy2xmvbm4ntxeucqlpoc7u5xa2jr4t62kxnw5i@jpeg"
+      ],
+      "extraURLs": []
+    }
+  },
+
+  //
   // pixiv
   //
 

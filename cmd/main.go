@@ -14,6 +14,7 @@ import (
 )
 
 func main() {
+
 	err := core.ReadConfig()
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %w", err))
@@ -41,7 +42,7 @@ func main() {
 
 			retry := 0
 			for retry < 5 {
-				result, err := processor.GetImageURLs(url)
+				result, err := processor.GetImageURLs(c, url)
 				if err != nil {
 					var errMandatoryElementNotFound *core.ErrMandatoryElementNotFound
 
