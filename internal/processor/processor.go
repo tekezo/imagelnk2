@@ -54,12 +54,21 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 
 	apiClient, canonicalURL := p.findAPIClient(url)
 	if apiClient != nil {
+		page, _, _, err := core.OpenPage(p.browser, canonicalURL, core.OpenPageOptions{
+			Cookies: nil,
+		})
+		if err != nil {
+			return nil, err
+		}
+		// Set timeout after page is prepared to avoid deadline exceeded error in OpenPage.
+		page = page.Timeout(5 * time.Second)
+
 		result, err := (*apiClient).GetImageURLs(ctx, canonicalURL)
 		if err != nil {
 			return nil, err
 		}
 
-		page := rod.New().MustConnect().MustPage()
+		log.Printf("result: %+v", result)
 
 		result.SaveImageCache(page, canonicalURL)
 		return result, nil

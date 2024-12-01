@@ -27,7 +27,7 @@ func (b Bluesky) GetCanonicalURL(url string) string {
 	if m == nil {
 		return ""
 	}
-	return m[1]
+	return fmt.Sprintf("https://bsky.app/profile/%s/post/%s", m[1], m[2])
 }
 
 func (b Bluesky) GetImageURLs(ctx context.Context, canonicalURL string) (*core.Result, error) {
@@ -49,7 +49,7 @@ func (b Bluesky) GetImageURLs(ctx context.Context, canonicalURL string) (*core.R
 		Password:   core.Config.Bluesky.Password,
 	}
 
-	session, err := atproto.ServerCreateSession(context.Background(), client, sessionInput)
+	session, err := atproto.ServerCreateSession(ctx, client, sessionInput)
 	if err != nil {
 		return nil, fmt.Errorf("failed to log in: %v", err)
 	}
