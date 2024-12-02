@@ -65,6 +65,9 @@ func (b Bluesky) GetImageURLs(ctx context.Context, canonicalURL string) (*core.R
 	if err != nil {
 		return nil, fmt.Errorf("failed to get actor profile: %v", err)
 	}
+	if profile == nil {
+		return nil, fmt.Errorf("profile is nil")
+	}
 
 	uris := []string{
 		fmt.Sprintf("at://%s/%s/%s", profile.Did, "app.bsky.feed.post", rkey),
@@ -72,6 +75,9 @@ func (b Bluesky) GetImageURLs(ctx context.Context, canonicalURL string) (*core.R
 	output, err := bsky.FeedGetPosts(ctx, client, uris)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get post: %v", err)
+	}
+	if output == nil {
+		return nil, fmt.Errorf("profile is nil")
 	}
 
 	for _, post := range output.Posts {
@@ -92,13 +98,25 @@ func (b Bluesky) GetImageURLs(ctx context.Context, canonicalURL string) (*core.R
 			text = post.Record.Val.(*bsky.FeedPost).Text
 		}
 
-		result.Title = core.FormatTitle(fmt.Sprintf("%s: %s", author, text))
-
 		if post.Embed != nil {
-			for _, image := range post.Embed.EmbedImages_View.Images {
-				result.AppendImageURL(image.Fullsize)
+			if post.Embed.EmbedImages_View != nil {
+				for _, image := range post.Embed.EmbedImages_View.Images {
+					result.AppendImageURL(image.Fullsize)
+				}
+			}
+
+			if post.Embed.EmbedExternal_View != nil {
+				text = fmt.Sprintf("%s: %s %s", text,
+					post.Embed.EmbedExternal_View.External.Title,
+					post.Embed.EmbedExternal_View.External.Uri)
+
+				if post.Embed.EmbedExternal_View.External.Thumb != nil {
+					result.AppendImageURL(*post.Embed.EmbedExternal_View.External.Thumb)
+				}
 			}
 		}
+
+		result.Title = core.FormatTitle(fmt.Sprintf("%s: %s", author, text))
 	}
 
 	return result, nil
