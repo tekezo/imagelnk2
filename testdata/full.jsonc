@@ -38,7 +38,7 @@
         // - https://m.media-amazon.com/images/I/31qNTsqKFuL._AC_SX679_.jpg
         // - https://m.media-amazon.com/images/I/616HWFy9cVS._AC_SX522_.jpg
         // - https://m.media-amazon.com/images/I/616HWFy9cVS.__AC_SX300_SY300_QL70_ML2_.jpg
-        "regexp:^https://m\\.media-amazon\\.com/images/I/(31qNTsqKFuL|616HWFy9cVS)\\..+\\.jpg"
+        "regexp:^https://m\\.media-amazon\\.com/images/I/(31qNTsqKFuL|616HWFy9cVS|51p3xiAi7KL)\\..+\\.jpg"
       ],
       "extraURLs": []
     }
