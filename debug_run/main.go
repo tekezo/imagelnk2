@@ -25,7 +25,9 @@ func main() {
 		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 
-	controlURL := launcher.New().Bin("/opt/google/chrome/chrome").MustLaunch()
+	controlURL := launcher.New().Bin("/opt/google/chrome/chrome").
+		Set("lang", core.Config.Lang).
+		MustLaunch()
 	browser := rod.New().ControlURL(controlURL).MustConnect()
 	defer browser.MustClose()
 

@@ -1,5 +1,6 @@
 hostname = "localhost"
 port = 8930
+lang = "en"
 
 imageCacheDirectory = "/tmp/imagelnk2"
 imageCacheURL = "https://example.com"
