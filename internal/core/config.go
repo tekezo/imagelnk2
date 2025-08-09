@@ -3,7 +3,6 @@ package core
 type config struct {
 	Hostname string
 	Port     int
-	Lang     string
 
 	ImageCacheDirectory string
 	ImageCacheURL       string
