@@ -59,7 +59,8 @@
         // - https://m.media-amazon.com/images/I/61A9ebYDldL.__AC_SX300_SY300_QL70_FMwebp_.jpg
         // - https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61A9ebYDldL._AC_SL1500_.jpg
         // - https://m.media-amazon.com/images/I/71NUlURgupL._AC_SL1500_.jpg
-        "regexp:^https://m\\.media-amazon\\.com/images/.+/(61A9ebYDldL|71diSPGO2XL|71NUlURgupL)\\..+\\.jpg"
+        // - https://m.media-amazon.com/images/I/71BK5Qmlz0L._AC_SL1500_.jpg
+        "regexp:^https://m\\.media-amazon\\.com/images/.+/(61A9ebYDldL|71diSPGO2XL|71NUlURgupL|71BK5Qmlz0L)\\..+\\.jpg"
       ],
       "extraURLs": []
     }
