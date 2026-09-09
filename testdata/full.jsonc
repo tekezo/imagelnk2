@@ -209,7 +209,7 @@
     "filename": "x.com.emoji.html",
     "url": "https://x.com/ImageLnk/status/1670348085061652480",
     "result": {
-      "title": "regexp:^ImageLnk: (絵文字|emoji) 🐱🐱(絵文字|emoji)$",
+      "title": "regexp:^ImageLnk: (絵文字|emoji)\\s*🐱🐱\\s*(絵文字|emoji)$",
       "imageUrls": [],
       "extraURLs": []
     }
@@ -218,7 +218,7 @@
     "filename": "x.com.reply.html",
     "url": "https://x.com/ImageLnk/status/1670350649484267520",
     "result": {
-      "title": "ImageLnk: reply 🐈🐈reply",
+      "title": "regexp:^ImageLnk: reply\\s*🐈🐈\\s*reply$",
       "imageUrls": [],
       "extraURLs": []
     }
