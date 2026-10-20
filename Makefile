@@ -3,6 +3,7 @@
 
 build: staticcheck
 	go build -o imagelnk2 cmd/main.go
+	go build -o imagelnk2-cli ./cmd/imagelnk2-cli
 
 run: staticcheck build
 	PORT=1314 ./imagelnk2

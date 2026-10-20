@@ -42,3 +42,20 @@ curl 'http://localhost:8930/get?url=https://github.com/tekezo/'
     ]
 }
 ```
+
+### CLI
+
+Build the command-line client:
+
+```shell
+make build
+```
+
+Pass a URL to fetch and print the result as JSON:
+
+```shell
+./imagelnk2-cli 'https://x.com/ImageLnk/status/1296296267526500353'
+```
+
+The CLI reads `imagelnk2.toml` from the current directory and launches Chrome
+directly, so the HTTP server does not need to be running.
