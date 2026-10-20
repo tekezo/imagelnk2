@@ -49,6 +49,7 @@ type OpenPageOptions struct {
 	SupportRawImage bool
 	WaitNavigation  bool
 	WaitRequestIdle bool
+	SkipWaitStable  bool
 }
 
 func OpenPage(
@@ -104,7 +105,9 @@ func OpenPage(
 			waitNavigation()
 		}
 
-		page.MustWaitStable()
+		if !options.SkipWaitStable {
+			page.MustWaitStable()
+		}
 	})
 	if err != nil {
 		return

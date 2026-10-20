@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"imagelnk2/internal/core"
 	"regexp"
+	"time"
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
@@ -43,8 +44,9 @@ func (x Xcom) OpenPage(url string) (*rod.Page, string, []byte, error) {
 			},
 		},
 		SupportRawImage: false,
-		WaitNavigation:  true,
-		WaitRequestIdle: true,
+		WaitNavigation:  false,
+		WaitRequestIdle: false,
+		SkipWaitStable:  true,
 	})
 }
 
@@ -65,6 +67,14 @@ func (x Xcom) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, e
 	// Edited tweet have history element instead of time element.
 	// historyURL == "/C2_STAFF/status/1679790222937296898/history"
 	historyURL := timeURL + "/history"
+
+	// X keeps making background requests after the tweet is rendered, so waiting
+	// for the whole page to become idle is unnecessarily slow. Wait only until
+	// the link that identifies the requested tweet has been rendered.
+	timeLinkSelector := fmt.Sprintf(`*[data-testid="tweet"] a[href="%s"], *[data-testid="tweet"] a[href="%s"]`, timeURL, historyURL)
+	if _, err := page.Timeout(5 * time.Second).Element(timeLinkSelector); err != nil {
+		return nil, core.NewErrMandatoryElementNotFound(fmt.Sprintf("tweet timeURL:%s", timeURL))
+	}
 
 	var tweet *rod.Element
 	if elements, err := page.Elements(`*[data-testid="tweet"]`); err == nil {
@@ -87,6 +97,10 @@ func (x Xcom) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, e
 		// If tweet is not found, it's age-restricted tweet
 		result.Title = "error: tweet element is not found"
 		return nil, core.NewErrMandatoryElementNotFound(fmt.Sprintf("tweet timeURL:%s", timeURL))
+	}
+
+	if err := tweet.WaitStable(300 * time.Millisecond); err != nil {
+		return nil, err
 	}
 
 	//
