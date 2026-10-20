@@ -63,7 +63,7 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 		// Set timeout after page is prepared to avoid deadline exceeded error in OpenPage.
 		page = page.Timeout(5 * time.Second)
 
-		result, err := (*apiClient).GetImageURLs(ctx, canonicalURL)
+		result, err := apiClient.GetImageURLs(ctx, canonicalURL)
 		if err != nil {
 			return nil, err
 		}
@@ -76,7 +76,7 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 
 	site, canonicalURL := p.findSite(url)
 	if site != nil {
-		page, mime, body, err := (*site).OpenPage(canonicalURL)
+		page, mime, body, err := site.OpenPage(canonicalURL)
 		if err != nil {
 			return nil, err
 		}
@@ -96,10 +96,14 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 			return result, nil
 		}
 
-		// Set timeout after page is prepared to avoid deadline exceeded error in OpenPage.
+		if err := site.WaitReady(page, canonicalURL); err != nil {
+			return nil, err
+		}
+
+		// Limit extraction after the site-specific readiness check has completed.
 		page = page.Timeout(5 * time.Second)
 
-		result, err := (*site).GetImageURLs(page, canonicalURL)
+		result, err := site.Extract(page, canonicalURL)
 		if err != nil {
 			return nil, err
 		}
@@ -118,7 +122,7 @@ func (p Processor) SaveHTML(url string, filename string) error {
 	if site != nil {
 		log.Printf("open: %s", canonicalURL)
 
-		page, mime, _, err := (*site).OpenPage(canonicalURL)
+		page, mime, _, err := site.OpenPage(canonicalURL)
 		if err != nil {
 			return err
 		}
@@ -126,7 +130,11 @@ func (p Processor) SaveHTML(url string, filename string) error {
 
 		log.Printf("page is opened: %s %s", canonicalURL, mime)
 
-		// Set timeout after page is prepared to avoid deadline exceeded error in OpenPage.
+		if err := site.WaitReady(page, canonicalURL); err != nil {
+			return err
+		}
+
+		// Limit snapshot processing after the site-specific readiness check.
 		page = page.Timeout(5 * time.Second)
 
 		removeElementSelectors := []string{
@@ -179,7 +187,7 @@ func (p Processor) Debug(url string, path string) (*core.Result, error) {
 
 	apiClient, _ := p.findAPIClient(url)
 	if apiClient != nil {
-		result, err := (*apiClient).GetImageURLs(context.Background(), url)
+		result, err := apiClient.GetImageURLs(context.Background(), url)
 		if err != nil {
 			return nil, err
 		}
@@ -187,7 +195,7 @@ func (p Processor) Debug(url string, path string) (*core.Result, error) {
 		return result, nil
 	}
 
-	site, _ := p.findSite(url)
+	site, canonicalURL := p.findSite(url)
 	if site != nil {
 		testdataURL := fmt.Sprintf("http://%s:%d/testdata?filename=%s", core.Config.Hostname, core.Config.Port, path)
 
@@ -198,12 +206,15 @@ func (p Processor) Debug(url string, path string) (*core.Result, error) {
 		go router.Run()
 
 		page.MustNavigate(testdataURL)
-		page.MustWaitStable()
+
+		if err := site.WaitReady(page, canonicalURL); err != nil {
+			return nil, err
+		}
 
 		// Set timeout after page is prepared to avoid deadline exceeded error.
 		page = page.Timeout(5 * time.Second)
 
-		return (*site).GetImageURLs(page, url)
+		return site.Extract(page, canonicalURL)
 	}
 
 	return nil, fmt.Errorf("no matching apiClient and site found")
@@ -214,26 +225,24 @@ func (p Processor) redirectedURL(url string) string {
 	return url
 }
 
-func (p Processor) findAPIClient(url string) (apiClinet *core.APIClient, canonicalURL string) {
-	for _, c := range p.apiClients {
-		canonicalURL = c.GetCanonicalURL(url)
+func (p Processor) findAPIClient(url string) (core.APIClient, string) {
+	for _, apiClient := range p.apiClients {
+		canonicalURL := apiClient.GetCanonicalURL(url)
 		if canonicalURL != "" {
-			apiClinet = &c
-			return
+			return apiClient, canonicalURL
 		}
 	}
 
-	return
+	return nil, ""
 }
 
-func (p Processor) findSite(url string) (site *core.Site, canonicalURL string) {
-	for _, s := range p.sites {
-		canonicalURL = s.GetCanonicalURL(url)
+func (p Processor) findSite(url string) (core.Site, string) {
+	for _, site := range p.sites {
+		canonicalURL := site.GetCanonicalURL(url)
 		if canonicalURL != "" {
-			site = &s
-			return
+			return site, canonicalURL
 		}
 	}
 
-	return
+	return nil, ""
 }

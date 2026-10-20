@@ -3,11 +3,11 @@ package core
 import (
 	"log"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/proto"
-	"golang.org/x/exp/slices"
 )
 
 type (

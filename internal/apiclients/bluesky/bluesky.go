@@ -6,9 +6,8 @@ import (
 	"imagelnk2/internal/core"
 	"regexp"
 
-	"github.com/bluesky-social/indigo/api/atproto"
 	"github.com/bluesky-social/indigo/api/bsky"
-	"github.com/bluesky-social/indigo/xrpc"
+	"github.com/bluesky-social/indigo/atproto/atclient"
 )
 
 var (
@@ -40,25 +39,16 @@ func (b Bluesky) GetImageURLs(ctx context.Context, canonicalURL string) (*core.R
 	actor := m[1]
 	rkey := m[2]
 
-	client := &xrpc.Client{
-		Host: "https://bsky.social",
-	}
-
-	sessionInput := &atproto.ServerCreateSession_Input{
-		Identifier: core.Config.Bluesky.Identifier,
-		Password:   core.Config.Bluesky.Password,
-	}
-
-	session, err := atproto.ServerCreateSession(ctx, client, sessionInput)
+	client, err := atclient.LoginWithPasswordHost(
+		ctx,
+		"https://bsky.social",
+		core.Config.Bluesky.Identifier,
+		core.Config.Bluesky.Password,
+		"",
+		nil,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to log in: %v", err)
-	}
-
-	client.Auth = &xrpc.AuthInfo{
-		AccessJwt:  session.AccessJwt,
-		RefreshJwt: session.RefreshJwt,
-		Did:        session.Did,
-		Handle:     session.Handle,
 	}
 
 	profile, err := bsky.ActorGetProfile(ctx, client, actor)

@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
@@ -11,13 +12,13 @@ import (
 	"github.com/go-rod/rod/lib/proto"
 	"github.com/go-rod/stealth"
 	"github.com/spf13/viper"
-	"golang.org/x/exp/slices"
 )
 
 var (
 	spaceRegexp       = regexp.MustCompile(`\s+`)
 	contentTypeRegexp = regexp.MustCompile(`^([^;]+)`)
 	elementTimeout    = 100 * time.Millisecond
+	pageReadyTimeout  = 5 * time.Second
 )
 
 func ReadConfig() error {
@@ -47,9 +48,6 @@ func ReadConfig() error {
 type OpenPageOptions struct {
 	Cookies         []*proto.NetworkCookieParam
 	SupportRawImage bool
-	WaitNavigation  bool
-	WaitRequestIdle bool
-	SkipWaitStable  bool
 }
 
 func OpenPage(
@@ -86,34 +84,24 @@ func OpenPage(
 		page.SetCookies(options.Cookies)
 	}
 
-	var waitNavigation func()
-	if options.WaitNavigation {
-		waitNavigation = page.Timeout(5 * time.Second).MustWaitNavigation()
-	}
-	var waitRequestIdle func()
-	if options.WaitRequestIdle {
-		waitRequestIdle = page.Timeout(5 * time.Second).MustWaitRequestIdle()
-	}
-
-	page.MustNavigate(url)
-
-	err = rod.Try(func() {
-		if waitRequestIdle != nil {
-			waitRequestIdle()
-		}
-		if waitNavigation != nil {
-			waitNavigation()
-		}
-
-		if !options.SkipWaitStable {
-			page.MustWaitStable()
-		}
-	})
+	err = page.Navigate(url)
 	if err != nil {
 		return
 	}
 
 	return
+}
+
+func WaitForPageStable(page *rod.Page) error {
+	return page.Timeout(pageReadyTimeout).WaitStable(800 * time.Millisecond)
+}
+
+func WaitForElement(page *rod.Page, selector string, name string) (*rod.Element, error) {
+	element, err := page.Timeout(pageReadyTimeout).Element(selector)
+	if err != nil {
+		return nil, NewErrMandatoryElementNotFound(name)
+	}
+	return element, nil
 }
 
 func StartRequestReduceRouter(page *rod.Page) *rod.HijackRouter {

@@ -37,7 +37,11 @@ func (z ZHT) OpenPage(url string) (*rod.Page, string, []byte, error) {
 	})
 }
 
-func (z ZHT) GetImageURLs(page *rod.Page, canonicalURL string) (result *core.Result, err error) {
+func (z ZHT) WaitReady(page *rod.Page, canonicalURL string) error {
+	return core.WaitForPageStable(page)
+}
+
+func (z ZHT) Extract(page *rod.Page, canonicalURL string) (result *core.Result, err error) {
 	result = core.NewResult()
 
 	m := urlRegexp.FindStringSubmatch(canonicalURL)

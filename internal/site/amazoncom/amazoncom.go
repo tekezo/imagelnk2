@@ -39,11 +39,15 @@ func (a Amazon) OpenPage(url string) (*rod.Page, string, []byte, error) {
 				Domain: ".amazon.com",
 			},
 		},
-		SupportRawImage: false,
 	})
 }
 
-func (a Amazon) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, error) {
+func (a Amazon) WaitReady(page *rod.Page, canonicalURL string) error {
+	_, err := core.WaitForElement(page, `img[data-old-hires]:not([data-old-hires=""])`, "product image")
+	return err
+}
+
+func (a Amazon) Extract(page *rod.Page, canonicalURL string) (*core.Result, error) {
 	result := core.NewResult()
 
 	result.Title = core.GetTitle(page)

@@ -43,63 +43,63 @@ func (x Xcom) OpenPage(url string) (*rod.Page, string, []byte, error) {
 				Domain: "x.com",
 			},
 		},
-		SupportRawImage: false,
-		WaitNavigation:  false,
-		WaitRequestIdle: false,
-		SkipWaitStable:  true,
 	})
 }
 
-func (x Xcom) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, error) {
+func (x Xcom) WaitReady(page *rod.Page, canonicalURL string) error {
+	timeURL, historyURL, err := getTweetURLs(canonicalURL)
+	if err != nil {
+		return err
+	}
+
+	// X keeps making background requests after the tweet is rendered, so wait
+	// only until the link that identifies the requested tweet has appeared.
+	timeLinkSelector := fmt.Sprintf(`*[data-testid="tweet"] a[href="%s"], *[data-testid="tweet"] a[href="%s"]`, timeURL, historyURL)
+	if _, err := core.WaitForElement(page, timeLinkSelector, fmt.Sprintf("tweet timeURL:%s", timeURL)); err != nil {
+		return err
+	}
+
+	tweet, err := findTweet(page, timeURL, historyURL)
+	if err != nil {
+		return err
+	}
+
+	return tweet.Timeout(5 * time.Second).WaitStable(300 * time.Millisecond)
+}
+
+func getTweetURLs(canonicalURL string) (string, string, error) {
+	m := timeURLRegexp.FindStringSubmatch(canonicalURL)
+	if m == nil {
+		return "", "", fmt.Errorf("unsupported URL %s", canonicalURL)
+	}
+	timeURL := m[1]
+	return timeURL, timeURL + "/history", nil
+}
+
+func findTweet(page *rod.Page, timeURL string, historyURL string) (*rod.Element, error) {
+	if elements, err := page.Elements(`*[data-testid="tweet"]`); err == nil {
+		for _, element := range elements {
+			if core.FindElement(element, fmt.Sprintf(`a[href="%s"]`, timeURL)) != nil || core.FindElement(element, fmt.Sprintf(`a[href="%s"]`, historyURL)) != nil {
+				return element, nil
+			}
+		}
+	}
+	return nil, core.NewErrMandatoryElementNotFound(fmt.Sprintf("tweet timeURL:%s", timeURL))
+}
+
+func (x Xcom) Extract(page *rod.Page, canonicalURL string) (*core.Result, error) {
 	result := core.NewResult()
 
 	//
 	// Find tweet element by link
 	//
 
-	// timeURL == "/ImageLnk/status/1670350649484267520"
-	m := timeURLRegexp.FindStringSubmatch(canonicalURL)
-	if m == nil {
-		return nil, fmt.Errorf("unsupported URL %s", canonicalURL)
+	timeURL, historyURL, err := getTweetURLs(canonicalURL)
+	if err != nil {
+		return nil, err
 	}
-	timeURL := m[1]
-
-	// Edited tweet have history element instead of time element.
-	// historyURL == "/C2_STAFF/status/1679790222937296898/history"
-	historyURL := timeURL + "/history"
-
-	// X keeps making background requests after the tweet is rendered, so waiting
-	// for the whole page to become idle is unnecessarily slow. Wait only until
-	// the link that identifies the requested tweet has been rendered.
-	timeLinkSelector := fmt.Sprintf(`*[data-testid="tweet"] a[href="%s"], *[data-testid="tweet"] a[href="%s"]`, timeURL, historyURL)
-	if _, err := page.Timeout(5 * time.Second).Element(timeLinkSelector); err != nil {
-		return nil, core.NewErrMandatoryElementNotFound(fmt.Sprintf("tweet timeURL:%s", timeURL))
-	}
-
-	var tweet *rod.Element
-	if elements, err := page.Elements(`*[data-testid="tweet"]`); err == nil {
-		for _, e := range elements {
-			timeElement := core.FindElement(e, fmt.Sprintf(`a[href="%s"]`, timeURL))
-			if timeElement != nil {
-				tweet = e
-				break
-			}
-
-			historyElement := core.FindElement(e, fmt.Sprintf(`a[href="%s"]`, historyURL))
-			if historyElement != nil {
-				tweet = e
-				break
-			}
-		}
-	}
-
-	if tweet == nil {
-		// If tweet is not found, it's age-restricted tweet
-		result.Title = "error: tweet element is not found"
-		return nil, core.NewErrMandatoryElementNotFound(fmt.Sprintf("tweet timeURL:%s", timeURL))
-	}
-
-	if err := tweet.WaitStable(300 * time.Millisecond); err != nil {
+	tweet, err := findTweet(page, timeURL, historyURL)
+	if err != nil {
 		return nil, err
 	}
 

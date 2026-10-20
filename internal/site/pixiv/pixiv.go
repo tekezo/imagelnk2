@@ -43,7 +43,11 @@ func (p Pixiv) OpenPage(url string) (*rod.Page, string, []byte, error) {
 	})
 }
 
-func (p Pixiv) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, error) {
+func (p Pixiv) WaitReady(page *rod.Page, canonicalURL string) error {
+	return core.WaitForPageStable(page)
+}
+
+func (p Pixiv) Extract(page *rod.Page, canonicalURL string) (*core.Result, error) {
 	result := core.NewResult()
 
 	result.Title = core.GetTitle(page)

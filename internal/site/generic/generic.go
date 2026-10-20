@@ -27,7 +27,11 @@ func (g Generic) OpenPage(url string) (*rod.Page, string, []byte, error) {
 	})
 }
 
-func (g Generic) GetImageURLs(page *rod.Page, canonicalURL string) (*core.Result, error) {
+func (g Generic) WaitReady(page *rod.Page, canonicalURL string) error {
+	return core.WaitForPageStable(page)
+}
+
+func (g Generic) Extract(page *rod.Page, canonicalURL string) (*core.Result, error) {
 	result := core.NewResult()
 
 	result.Title = core.GetOpenGraphTitle(page)
