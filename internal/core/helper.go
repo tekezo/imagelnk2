@@ -2,10 +2,10 @@ package core
 
 import (
 	"log"
-	"net/http"
 	"regexp"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/go-rod/rod"
@@ -56,14 +56,31 @@ func OpenPage(
 	options OpenPageOptions,
 ) (page *rod.Page, mime string, body []byte, err error) {
 	page = stealth.MustPage(browser)
+	router := page.HijackRequests()
+	defer router.MustStop()
+
+	var blockedErr error
+	var blockedErrMutex sync.Mutex
+	router.MustAdd("*", func(ctx *rod.Hijack) {
+		if ctx.Request.Type() == proto.NetworkResourceTypeDocument {
+			requestURL := ctx.Request.URL()
+			if requestURL.Scheme == "http" || requestURL.Scheme == "https" {
+				if validationErr := ValidatePublicURL(ctx.Request.Req().Context(), requestURL.String()); validationErr != nil {
+					blockedErrMutex.Lock()
+					blockedErr = validationErr
+					blockedErrMutex.Unlock()
+					ctx.Response.Fail(proto.NetworkErrorReasonBlockedByClient)
+					return
+				}
+			}
+		}
+
+		ctx.Skip = true
+	})
 
 	if options.SupportRawImage {
-		router := page.HijackRequests()
-		defer router.MustStop()
-		go router.Run()
-
 		router.MustAdd(url, func(ctx *rod.Hijack) {
-			_ = ctx.LoadResponse(http.DefaultClient, true)
+			_ = ctx.LoadResponse(newPublicHTTPClient(), true)
 
 			if contentType, ok := ctx.Response.Headers()["Content-Type"]; ok {
 				if len(contentType) > 0 {
@@ -80,12 +97,25 @@ func OpenPage(
 		})
 	}
 
+	router.MustAdd("*", func(ctx *rod.Hijack) {
+		ctx.ContinueRequest(&proto.FetchContinueRequest{})
+	})
+	go router.Run()
+
 	if options.Cookies != nil {
 		page.SetCookies(options.Cookies)
 	}
 
-	err = page.Navigate(url)
+	navigationErr := page.Navigate(url)
+
+	blockedErrMutex.Lock()
+	err = blockedErr
+	blockedErrMutex.Unlock()
 	if err != nil {
+		return
+	}
+	if navigationErr != nil {
+		err = navigationErr
 		return
 	}
 

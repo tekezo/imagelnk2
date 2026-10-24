@@ -1,8 +1,8 @@
 package core
 
 import (
+	"context"
 	"log"
-	"net/http"
 	"slices"
 	"time"
 
@@ -46,10 +46,15 @@ func (r *Result) AppendImageCacheURL(url string) {
 	}
 }
 
-func (r *Result) SaveImageCache(page *rod.Page, canonicalURL string) {
+func (r *Result) SaveImageCache(page *rod.Page, canonicalURL string) error {
 	// When a request is made for an image, the request may be recursive with different types (Document and Image) for the same URL.
 	// In such cases, only the first result is used, so remember the URLs that have already been added.
 	savedImageURLs := []string{}
+	for _, imageURL := range r.ImageURLs {
+		if err := ValidatePublicURL(context.Background(), imageURL); err != nil {
+			return err
+		}
+	}
 
 	page = page.CancelTimeout().Timeout(30 * time.Second)
 
@@ -63,7 +68,7 @@ func (r *Result) SaveImageCache(page *rod.Page, canonicalURL string) {
 		if slices.Contains(r.ImageURLs, url) {
 			log.Printf("hijack %s %s", ctx.Request.Type(), ctx.Request.URL())
 
-			if err := ctx.LoadResponse(http.DefaultClient, true); err == nil {
+			if err := ctx.LoadResponse(newPublicHTTPClient(), true); err == nil {
 				if !slices.Contains(savedImageURLs, url) {
 					savedImageURLs = append(savedImageURLs, url)
 
@@ -96,4 +101,6 @@ func (r *Result) SaveImageCache(page *rod.Page, canonicalURL string) {
 			break
 		}
 	}
+
+	return nil
 }

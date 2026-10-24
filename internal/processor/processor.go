@@ -50,6 +50,10 @@ func New(browser *rod.Browser) Processor {
 }
 
 func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, error) {
+	if err := core.ValidatePublicURL(ctx, url); err != nil {
+		return nil, err
+	}
+
 	url = p.redirectedURL(url)
 
 	apiClient, canonicalURL := p.findAPIClient(url)
@@ -70,7 +74,9 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 
 		log.Printf("result: %+v", result)
 
-		result.SaveImageCache(page, canonicalURL)
+		if err := result.SaveImageCache(page, canonicalURL); err != nil {
+			return nil, err
+		}
 		return result, nil
 	}
 
@@ -108,7 +114,9 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 			return nil, err
 		}
 
-		result.SaveImageCache(page, canonicalURL)
+		if err := result.SaveImageCache(page, canonicalURL); err != nil {
+			return nil, err
+		}
 		return result, nil
 	}
 
@@ -116,6 +124,10 @@ func (p Processor) GetImageURLs(ctx context.Context, url string) (*core.Result, 
 }
 
 func (p Processor) SaveHTML(url string, filename string) error {
+	if err := core.ValidatePublicURL(context.Background(), url); err != nil {
+		return err
+	}
+
 	url = p.redirectedURL(url)
 
 	site, canonicalURL := p.findSite(url)
@@ -183,6 +195,10 @@ func (p Processor) SaveHTML(url string, filename string) error {
 }
 
 func (p Processor) Debug(url string, path string) (*core.Result, error) {
+	if err := core.ValidatePublicURL(context.Background(), url); err != nil {
+		return nil, err
+	}
+
 	url = p.redirectedURL(url)
 
 	apiClient, _ := p.findAPIClient(url)
