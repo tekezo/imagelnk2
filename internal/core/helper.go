@@ -130,17 +130,25 @@ func WaitForPageStable(page *rod.Page) error {
 	return page.Timeout(pageReadyTimeout).WaitStable(800 * time.Millisecond)
 }
 
-// WaitForDocumentReady waits only for the minimum DOM needed by the generic
-// extractor. Unlike WaitStable, it doesn't require dynamic pages to stop
-// changing or making requests.
+// WaitForDocumentReady waits until the initial HTML has been parsed. Unlike
+// WaitStable, it doesn't require dynamic pages to stop changing or making
+// requests.
 func WaitForDocumentReady(page *rod.Page) error {
 	var lastErr error
 	for attempt := 0; attempt < documentReadyAttempts; attempt++ {
-		if _, err := page.Timeout(pageReadyTimeout).Element("head, body"); err == nil {
+		_, err := page.Timeout(pageReadyTimeout).Eval(`() => {
+			if (document.readyState !== "loading") {
+				return true
+			}
+
+			return new Promise(resolve => {
+				document.addEventListener("DOMContentLoaded", () => resolve(true), { once: true })
+			})
+		}`)
+		if err == nil {
 			return nil
-		} else {
-			lastErr = err
 		}
+		lastErr = err
 
 		if !isNavigationRace(lastErr) {
 			return NewErrMandatoryElementNotFound("document")
