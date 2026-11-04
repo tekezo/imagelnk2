@@ -1,6 +1,7 @@
 package core
 
 import (
+	"errors"
 	"log"
 	"regexp"
 	"slices"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/cdp"
 	"github.com/go-rod/rod/lib/proto"
 	"github.com/go-rod/stealth"
 	"github.com/spf13/viper"
@@ -20,6 +22,8 @@ var (
 	elementTimeout    = 100 * time.Millisecond
 	pageReadyTimeout  = 5 * time.Second
 )
+
+const documentReadyAttempts = 3
 
 func ReadConfig() error {
 	viper.SetConfigName("imagelnk2")
@@ -124,6 +128,39 @@ func OpenPage(
 
 func WaitForPageStable(page *rod.Page) error {
 	return page.Timeout(pageReadyTimeout).WaitStable(800 * time.Millisecond)
+}
+
+// WaitForDocumentReady waits only for the minimum DOM needed by the generic
+// extractor. Unlike WaitStable, it doesn't require dynamic pages to stop
+// changing or making requests.
+func WaitForDocumentReady(page *rod.Page) error {
+	var lastErr error
+	for attempt := 0; attempt < documentReadyAttempts; attempt++ {
+		if _, err := page.Timeout(pageReadyTimeout).Element("head, body"); err == nil {
+			return nil
+		} else {
+			lastErr = err
+		}
+
+		if !isNavigationRace(lastErr) {
+			return NewErrMandatoryElementNotFound("document")
+		}
+
+		// Give a client-side redirect time to install its new execution context.
+		if attempt+1 < documentReadyAttempts {
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+
+	return lastErr
+}
+
+func isNavigationRace(err error) bool {
+	var protocolErr *cdp.Error
+	return errors.As(err, &protocolErr) &&
+		protocolErr.Code == -32000 &&
+		(protocolErr.Message == "Inspected target navigated or closed" ||
+			protocolErr.Message == "Execution context was destroyed.")
 }
 
 func WaitForElement(page *rod.Page, selector string, name string) (*rod.Element, error) {

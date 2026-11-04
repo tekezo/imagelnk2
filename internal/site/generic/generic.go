@@ -28,7 +28,7 @@ func (g Generic) OpenPage(url string) (*rod.Page, string, []byte, error) {
 }
 
 func (g Generic) WaitReady(page *rod.Page, canonicalURL string) error {
-	return core.WaitForPageStable(page)
+	return core.WaitForDocumentReady(page)
 }
 
 func (g Generic) Extract(page *rod.Page, canonicalURL string) (*core.Result, error) {
