@@ -87,6 +87,53 @@ func TestValidatePublicURL(t *testing.T) {
 	})
 }
 
+func TestResolveReferenceURL(t *testing.T) {
+	tests := []struct {
+		name      string
+		pageURL   string
+		reference string
+		want      string
+	}{
+		{
+			name:      "absolute URL",
+			pageURL:   "https://example.com/path/page.html",
+			reference: "https://cdn.example.com/image.png",
+			want:      "https://cdn.example.com/image.png",
+		},
+		{
+			name:      "root-relative URL",
+			pageURL:   "https://example.com/path/page.html",
+			reference: "/images/image.png",
+			want:      "https://example.com/images/image.png",
+		},
+		{
+			name:      "path-relative URL",
+			pageURL:   "https://example.com/path/page.html",
+			reference: "images/image.png",
+			want:      "https://example.com/path/images/image.png",
+		},
+		{
+			name:      "scheme-relative URL",
+			pageURL:   "https://example.com/path/page.html",
+			reference: "//cdn.example.com/image.png",
+			want:      "https://cdn.example.com/image.png",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual, err := ResolveReferenceURL(tt.pageURL, tt.reference)
+			require.NoError(t, err)
+			assert.Equal(t, tt.want, actual)
+		})
+	}
+
+	t.Run("invalid reference URL", func(t *testing.T) {
+		_, err := ResolveReferenceURL("https://example.com/", "%")
+		require.Error(t, err)
+	})
+}
+
 func TestSaveImageCacheRejectsPrivateURL(t *testing.T) {
 	result := NewResult()
 	result.AppendImageURL("http://169.254.169.254/latest/meta-data/")

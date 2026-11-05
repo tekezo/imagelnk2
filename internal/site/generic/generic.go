@@ -41,6 +41,10 @@ func (g Generic) Extract(page *rod.Page, canonicalURL string) (*core.Result, err
 
 	imageURL := core.GetOpenGraphImage(page)
 	if imageURL != "" {
+		imageURL, err := core.ResolveReferenceURL(canonicalURL, imageURL)
+		if err != nil {
+			return nil, err
+		}
 		result.AppendImageURL(imageURL)
 	}
 

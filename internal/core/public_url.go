@@ -33,6 +33,21 @@ func ValidatePublicURL(ctx context.Context, rawURL string) error {
 	return validatePublicURL(ctx, rawURL, net.DefaultResolver)
 }
 
+// ResolveReferenceURL resolves a possibly relative URL against the page URL.
+func ResolveReferenceURL(pageURL string, referenceURL string) (string, error) {
+	base, err := url.Parse(pageURL)
+	if err != nil {
+		return "", fmt.Errorf("invalid page URL: %w", err)
+	}
+
+	reference, err := url.Parse(referenceURL)
+	if err != nil {
+		return "", fmt.Errorf("invalid reference URL: %w", err)
+	}
+
+	return base.ResolveReference(reference).String(), nil
+}
+
 func newPublicHTTPClient() *http.Client {
 	client := *http.DefaultClient
 	client.CheckRedirect = func(request *http.Request, _ []*http.Request) error {
